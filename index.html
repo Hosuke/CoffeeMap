@@ -8,17 +8,34 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="style/main.css"/>
 
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <!--<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>-->
     <!--<script type="text/javascript"-->
             <!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqVc-f9T7sVkWRHbJddiwdr0Gf0nel1lU">-->
     <!--</script>-->
+    <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6tnYAqdRsoSx6iA5m7OV0cdtsGktBtD4">
+    </script>
 
 
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header row">
+                <a class="navbar-brand" href="#">CoffeeMap</a>
+                <form class="navbar-form navbar-right" role="search" data-bind="submit: search">
+                    <div class="form-group">
+                        <input type="text" data-bind="value: curAddress" class="form-control" placeholder="Where are you?">
+                    </div>
+                    <button type="submit" class="btn btn-default">Go!</button>
+                </form>
+            </div>
+        </div>
+    </nav>
     <div id="map-canvas"></div>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/knockout/dist/knockout.js"></script>
     <script src="scripts/app.js"></script>
 </body>
