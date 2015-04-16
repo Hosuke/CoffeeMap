@@ -113,6 +113,8 @@ var ViewModel = function() {
         // Check if addressQuery is empty
         if (addressQuery) {
             self.geocoding(addressQuery, self.moveTo);
+        } else {
+            alert("Please enter an address");
         }
     };
 
