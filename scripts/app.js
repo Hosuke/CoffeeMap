@@ -23,6 +23,12 @@ var ViewModel = function() {
     // Current Address for search
     this.curAddress = ko.observable("Canberra");
 
+    // List of Cafe nearby
+    this.cafeNearby = ko.observableArray([]);
+
+    // List of Cafe nearby Markers
+    this.cafeNearbyMarkers = ko.observableArray([]);
+
     // Google Geocoder
     this.geocoder = new google.maps.Geocoder();
 
@@ -59,6 +65,10 @@ var ViewModel = function() {
         marker.setMap(self.map);
     };
 
+    this.setCafeMarker = function(Cafe){
+        var marker = new google.maps.Marker
+    };
+
     /**
      * Geocoding a address to a place object, which includes lat and lng
      * @param address -- address for geocoding
@@ -87,14 +97,50 @@ var ViewModel = function() {
         var lat = dist.lat,
             lng = dist.lng;
         self.map.setCenter(position(lat, lng));
+        self.searchCafe(lat, lng);
     };
 
-    this.search = function(){
+    this.handleInput = function(){
         var addressQuery = this.curAddress();
+
+        // Clear Markers and Cafe list
+        self.cafeNearbyMarkers().forEach(function(marker){
+            marker.setMap(null);
+        });
+        self.cafeNearby([]);
+        self.cafeNearbyMarkers([]);
+
+        // Check if addressQuery is empty
         if (addressQuery) {
             self.geocoding(addressQuery, self.moveTo);
-            //self.moveTo(placeQuery);
         }
+    };
+
+    this.searchCafe = function(lat, lng, callback){
+        var clientID = "PCRVZWPJU2PW4PAWD04WWPHOVM5MRAW1X0FOOBBKS125I0DZ",
+            clientSecret = "ECDTQ32IMB3W50KQVSD1FVMHA2NBPM5BL3Z1ZVY5YKWYNHHT",
+            query = "coffee",
+            requestURL = 'https://api.foursquare.com/v2/venues/search?client_id=' + clientID + '&client_secret=' + clientSecret + '&v=20130815&ll=' + lat + ',' + lng + '&query=' + query,
+            cafeList = [];
+
+        $.getJSON(requestURL, function(data){
+            cafeList = data.response.venues;
+            cafeList.forEach(function(cafe){
+                //self.setLocationMarker(cafe.location.lat, cafe.location.lng);
+                self.cafeNearby.push(cafe);
+                self.cafeNearbyMarkers.push(new google.maps.Marker({
+                    map: self.map,
+                    position: position(cafe.location.lat, cafe.location.lng),
+                    title: cafe.name,
+                    address: cafe.location.address,
+                    city: cafe.location.city,
+                    contact: cafe.contact.formattedPhone,
+                    icon: 'assets/coffee-icon.png',
+                    url: cafe.url,
+                    id: cafe.id
+                }));
+            })
+        });
     };
 
 
