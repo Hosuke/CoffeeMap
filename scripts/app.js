@@ -32,6 +32,11 @@ var ViewModel = function() {
     // Google Geocoder
     this.geocoder = new google.maps.Geocoder();
 
+    // Google Map InfoWindow
+    this.infoWindow = new google.maps.InfoWindow({
+        maxWidth: 300
+    });
+
     /**
      * Initialize Google Map
      */
@@ -39,6 +44,8 @@ var ViewModel = function() {
     var mapOptions = {
         center: { lat: -35.3075, lng: 149.1244},
         zoom: 13,
+        disableDefaultUI: true,
+        zoomControl: true,
         mapTypeControlOptions: {
             mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
         }
@@ -96,6 +103,7 @@ var ViewModel = function() {
     this.moveTo = function(dist){
         var lat = dist.lat,
             lng = dist.lng;
+        self.map.setZoom(13);
         self.map.setCenter(position(lat, lng));
         self.searchCafe(lat, lng);
     };
@@ -118,6 +126,15 @@ var ViewModel = function() {
         }
     };
 
+
+
+    /**
+     * Search any nearby Cafe around (lat, lng) using Foursquare API
+     * and mark them on the map
+     * @param lat
+     * @param lng
+     * @param callback
+     */
     this.searchCafe = function(lat, lng, callback){
         var clientID = "PCRVZWPJU2PW4PAWD04WWPHOVM5MRAW1X0FOOBBKS125I0DZ",
             clientSecret = "ECDTQ32IMB3W50KQVSD1FVMHA2NBPM5BL3Z1ZVY5YKWYNHHT",
@@ -128,9 +145,12 @@ var ViewModel = function() {
         $.getJSON(requestURL, function(data){
             cafeList = data.response.venues;
             cafeList.forEach(function(cafe){
+
                 //self.setLocationMarker(cafe.location.lat, cafe.location.lng);
                 self.cafeNearby.push(cafe);
-                self.cafeNearbyMarkers.push(new google.maps.Marker({
+                console.dir(cafe);
+
+                var cafeMarker = new google.maps.Marker({
                     map: self.map,
                     position: position(cafe.location.lat, cafe.location.lng),
                     title: cafe.name,
@@ -140,13 +160,48 @@ var ViewModel = function() {
                     icon: 'assets/coffee-icon.png',
                     url: cafe.url,
                     id: cafe.id
-                }));
-            })
+                });
+
+                // Add event listener to each marker
+                google.maps.event.addListener(cafeMarker, 'click', (function(cafeMarker){
+
+                    // Check if there are required details
+                    cafeMarker.contact = cafeMarker.contact || 'No contact available';
+                    cafeMarker.address = cafeMarker.address || 'No address available';
+
+                    return function() {
+                        self.map.setCenter(cafeMarker.position);
+                        self.map.setZoom(17);
+                        var content = '<div><h5>' + cafeMarker.title + '</h5><div class="address">' + cafeMarker.address + '</div><div class="phone">' + cafeMarker.contact + '</div></div>';
+                        self.infoWindow.setContent(content);
+                        self.infoWindow.open(self.map, cafeMarker);
+                    };
+                })(cafeMarker));
+
+                self.cafeNearbyMarkers.push(cafeMarker);
+            });
+
+            self.map.setZoom(15);
         });
     };
 
+    this.goToCafeMarker = function(cafeMarker){
+        // Check if there are required details
+        cafeMarker.contact = cafeMarker.contact || 'No contact available';
+        cafeMarker.address = cafeMarker.address || 'No address available';
+        self.map.setCenter(cafeMarker.position);
+        self.map.setZoom(17);
+        var content = '<div><h5>' + cafeMarker.title + '</h5><div class="address">' + cafeMarker.address + '</div><div class="phone">' + cafeMarker.contact + '</div></div>';
+        self.infoWindow.setContent(content);
+        self.infoWindow.open(self.map, cafeMarker);
+    };
 
     self.setLocationMarker(-35.3075, 149.1244);
 };
 
 ko.applyBindings(new ViewModel());
+
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});

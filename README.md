@@ -13,4 +13,10 @@ https://developers.google.com/maps/documentation/javascript/styling#stylers
 https://snazzymaps.com/style/8/turquoise-water
 
 JQuery:
+
 $.getJSON() http://api.jquery.com/jQuery.getJSON/
+
+
+Simple-Sidebar:
+
+http://ironsummitmedia.github.io/startbootstrap-simple-sidebar/

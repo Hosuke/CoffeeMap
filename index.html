@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="style/flat-ui.css"/>
+    <link rel="stylesheet" href="style/simple-sidebar.css"/>
     <link rel="stylesheet" href="style/main.css"/>
 
     <!--<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>-->
@@ -20,29 +21,46 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-embossed container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                    <span class="sr-only">Toggle navigation</span>
-                </button>
-                <a class="navbar-brand" href="#">CoffeeMap</a>
-            </div>
+    <nav class="navbar navbar-inverse navbar-embossed container-fluid" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="#">CoffeeMap</a>
+        </div>
 
-            <div class="collapse navbar-collapse" id="navbar-collapse-01">
-                <form class="navbar-form navbar-right" data-bind="submit: handleInput" role="search">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input class="form-control" data-bind="value: curAddress" type="search" placeholder="Where are you?">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn"><span class="fui-search"></span></button>
-                            </span>
-                        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+            <form class="navbar-form navbar-left" data-bind="submit: handleInput" role="search">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" data-bind="value: curAddress" type="search" placeholder="Where are you?">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn"><span class="fui-search"></span></button>
+                        </span>
                     </div>
-                </form>
-            </div><!-- /.navbar-collapse -->
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+        <button class="navbar-right btn btn-primary btn-wide" id="menu-toggle" data-bind="visible: cafeNearbyMarkers().length > 0">
+            Toggle
+        </button>
     </nav>
 
-    <div id="map-canvas"></div>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="nav nav-list nav-list-vivid" data-bind="foreach: cafeNearbyMarkers, visible: cafeNearbyMarkers().length > 0">
+            <!--<ul data-bind="foreach: cafeNearbyMarkers, visible: cafeNearbyMarkers().length > 0">-->
+                <li data-bind="click: $root.goToCafeMarker">
+                    <a data-bind="text: title"></a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <div id="page-content-wrapper">
+            <div id="map-canvas"></div>
+        </div>
+    </div>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
