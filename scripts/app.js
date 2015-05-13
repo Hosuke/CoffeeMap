@@ -21,7 +21,7 @@ var ViewModel = function() {
     var self = this;
 
     // Current Address for search
-    this.curAddress = ko.observable("Canberra");
+    this.curAddress = ko.observable("");
 
     // List of Cafe nearby
     this.cafeNearby = ko.observableArray([]);
@@ -100,6 +100,10 @@ var ViewModel = function() {
         return place;
     };
 
+    /**
+     * Centre the map to a specific dist
+     * @param dist
+     */
     this.moveTo = function(dist){
         var lat = dist.lat,
             lng = dist.lng;
@@ -185,6 +189,10 @@ var ViewModel = function() {
         });
     };
 
+    /**
+     * Go to a specific Cafe Marker
+     * @param cafeMarker
+     */
     this.goToCafeMarker = function(cafeMarker){
         // Check if there are required details
         cafeMarker.contact = cafeMarker.contact || 'No contact available';
@@ -195,8 +203,6 @@ var ViewModel = function() {
         self.infoWindow.setContent(content);
         self.infoWindow.open(self.map, cafeMarker);
     };
-
-    self.setLocationMarker(-35.3075, 149.1244);
 };
 
 ko.applyBindings(new ViewModel());
