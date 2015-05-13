@@ -37,10 +37,6 @@ html, body, #map-canvas {
     padding-top: 10px;
 }
 
-.nav-list-vivid > li {
-    margin-bottom: 2px;
-}
-
 .nav-list > li > a {
     border-radius: 5px;
     font-size: 14.994px;
@@ -67,4 +63,164 @@ html, body, #map-canvas {
     background-color: #1abc9c;
     color: #ffffff;
     text-shadow: none;
+}
+
+/* search bar */
+.searchbar {
+
+}
+
+.searchbar-body {
+    border: 2px solid transparent;
+    border-radius: 7px;
+    overflow: hidden;
+    -webkit-transition: all .25s linear;
+    -moz-transition: all .25s linear;
+    -ms-transition: all .25s linear;
+    -o-transition: all .25s linear;
+    transition: all .25s linear;
+    transition-delay: .15s;
+}
+
+.searchbar-body .form-control,
+.searchbar-body .input-group-btn .btn {
+    border: none;
+    border-radius: 0;
+}
+
+.searchbar-body .input-group-btn .btn:hover {
+    color: #1abc9c;
+    border-color: #1abc9c;
+}
+
+.searchbar-body.active {
+    color: #1abc9c;
+    border-color: #1abc9c;
+}
+
+/* main */
+body {
+    overflow: hidden;
+}
+#wrapper {
+    margin-top: -53px;
+    height: 100%;
+    padding-top: 53px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.navbar-brand {
+    /*font-family: 'Raleway Dots', cursive;*/
+    /*font-family: 'Just Another Hand', cursive;*/
+    /*font-family: 'Delius Swash Caps', cursive;*/
+    font-family: 'Raleway Dots', cursive;
+}
+
+.navbar-embossed > .navbar-collapse {
+    border-radius: 0!important;
+}
+
+#menu-toggle {
+    position: fixed;
+    top: 65px;
+    right: 20px;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+#page-content-wrapper {
+    height: 100%;
+}
+
+#sidebar-wrapper {
+    width: 250px;
+    padding-top: 53px;
+    margin-left: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: none;
+    overflow: visible;
+}
+
+#sidebar-body {
+    overflow: auto;
+    height: 100%;
+}
+#sidebar-body .nav {
+    border-radius: 0;
+}
+
+#sidebar-body .nav a{
+    font-weight: 100;
+    border-bottom: 1px solid #ddd;
+}
+
+#sidebar-body .nav a:hover{
+    background-color: #e2e2e2;
+}
+
+#sidebar-body .nav .glyphicon {
+    margin-right: 5px;
+    font-size: 5px;
+}
+
+#sidebar-body .nav a span {
+    vertical-align: middle;
+}
+
+@media(max-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.in {
+        padding-top: 118px;
+        margin-top: -118px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper.in {
+        padding-top: 118px;
+    }
+
+    #menu-toggle {
+        min-width: 80px;
+        padding-left: 15px;
+        padding-right: 15px;
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        -ms-transition: all .3s;
+        -o-transition: all .3s;
+        transition: all .3s;
+    }
+
+    #menu-toggle.in {
+        -webkit-transform: translate(0,65px);
+        -moz-transform: translate(0,65px);
+        transform: translate(0,65px);
+    }
+
+    #sidebar-wrapper {
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        left: -250px;
+    }
+
+    #page-content-wrapper {
+        padding: 0;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
 }

@@ -201,7 +201,17 @@ var ViewModel = function() {
 
 ko.applyBindings(new ViewModel());
 
+
+// Toggle sidebar
 $("#menu-toggle").click(function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
+});
+
+$('.navbar-toggle').click(function (){
+    if ($('.navbar-collapse').hasClass('in')) {
+        $('#wrapper, #sidebar-wrapper, #menu-toggle').removeClass('in');
+    } else {
+        $('#wrapper, #sidebar-wrapper, #menu-toggle').addClass('in');
+    }
 });
