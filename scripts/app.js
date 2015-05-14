@@ -2,6 +2,8 @@
  * Created by Hosuke on 15/04/15.
  */
 
+"use strict";
+
 /**
  * Utility function to convert lat and lng to google.maps.LatLng() object
  * @param latitude
@@ -21,16 +23,16 @@ var ViewModel = function() {
     var self = this;
 
     // Current Address for search
-    this.curAddress = ko.observable("");
+    self.curAddress = ko.observable("");
 
     // List of Cafe nearby
-    this.cafeNearby = ko.observableArray([]);
+    self.cafeNearby = ko.observableArray([]);
 
     // List of Cafe nearby Markers
-    this.cafeNearbyMarkers = ko.observableArray([]);
+    self.cafeNearbyMarkers = ko.observableArray([]);
 
     // Google Geocoder
-    this.geocoder = new google.maps.Geocoder();
+    self.geocoder = new google.maps.Geocoder();
 
     // Google Map InfoWindow
     this.infoWindow = new google.maps.InfoWindow({
@@ -51,7 +53,7 @@ var ViewModel = function() {
         }
     };
     // Map Styles
-    var styles = [{"stylers":[{"hue":"#16a085"},{"saturation":0}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]}]
+    var styles = [{"stylers":[{"hue":"#16a085"},{"saturation":0}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]}];
     var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
 
     self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -73,7 +75,7 @@ var ViewModel = function() {
     };
 
     this.setCafeMarker = function(Cafe){
-        var marker = new google.maps.Marker
+        var marker = new google.maps.Marker();
     };
 
     /**
@@ -92,7 +94,7 @@ var ViewModel = function() {
                 place.location = results[0].geometry.location;
                 place.formattedAddress = results[0].formatted_address;
 
-                callback(place)
+                callback(place);
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
             }
@@ -150,9 +152,7 @@ var ViewModel = function() {
             cafeList = data.response.venues;
             cafeList.forEach(function(cafe){
 
-                //self.setLocationMarker(cafe.location.lat, cafe.location.lng);
                 self.cafeNearby.push(cafe);
-                console.dir(cafe);
 
                 var cafeMarker = new google.maps.Marker({
                     map: self.map,
@@ -186,7 +186,12 @@ var ViewModel = function() {
             });
 
             self.map.setZoom(15);
-        });
+        }).fail(
+          function(jqxhr, textStatus, error){
+              var err = textStatus + ", " + error;
+              console.log( "Searching Cafe Failed: " + err );
+          }
+        );
     };
 
     /**
